@@ -1,0 +1,28 @@
+{
+  "name": "Ecommerce_API_Node_Mongoose",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NguyenNgocBaoITITIU19084/Ecommerce_API_Node_Mongoose.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NguyenNgocBaoITITIU19084/Ecommerce_API_Node_Mongoose/issues"
+  },
+  "homepage": "https://github.com/NguyenNgocBaoITITIU19084/Ecommerce_API_Node_Mongoose#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.0",
+    "nodemailer": "^6.9.1",
+    "nodemon": "^2.0.20"
+  }
+}
