@@ -67,3 +67,14 @@ exports.forget = catchAsync(async (req, res) => {
   });
   res.status(201).json({ sucess: true });
 });
+
+exports.updateDetail = catchAsync(async (req, res) => {
+  const { name, age, phone, address, gender } = req.body;
+  const auth = req.user.email;
+  const update = await AuthSchema.findByIdAndUpdate(
+    { email: auth },
+    { name, age, phone, address, gender },
+    { new: true }
+  );
+  res.status(201).json({ succes: true, data: update });
+});

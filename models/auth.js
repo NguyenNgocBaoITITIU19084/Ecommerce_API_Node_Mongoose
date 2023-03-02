@@ -26,6 +26,20 @@ const authSchema = new Schema(
     age: {
       type: Number,
     },
+    address: {
+      type: String,
+      maxlength: [100, "address must be less than 100 letters"],
+    },
+    phone: {
+      type: String,
+      minlength: [10, "phone must be greater than or equal 10 numbers"],
+      maxlength: [11, "phone must be less than or equal 11 numbers"],
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female", "unknow"],
+      default: "unknow",
+    },
     role: {
       type: String,
       enum: ROLE,
@@ -36,6 +50,8 @@ const authSchema = new Schema(
     timestamps: true,
   }
 );
+
+mongoose.set("runValidators", true);
 
 authSchema.pre("save", function (next) {
   if (this.isModified("password")) {
