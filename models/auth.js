@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const { ROLE } = require("../contants/role");
 const bcrypt = require("bcryptjs");
+const validator = require("email-validator");
+
+const { ROLE } = require("../contants/role");
+
+const Schema = mongoose.Schema;
 
 const authSchema = new Schema(
   {
@@ -14,8 +17,14 @@ const authSchema = new Schema(
       type: String,
       minlength: [3, "email must be greater than 3 letters"],
       maxlength: [30, "email must be less than 30 letters"],
-      required: [true, "email is required"],
       unique: true,
+      required: [true, "email is required"],
+      validate: {
+        validator: function () {
+          return validator.validate(this.email);
+        },
+        message: (props) => `${props.value} is not a valid email!`,
+      },
     },
     password: {
       type: String,
@@ -37,7 +46,10 @@ const authSchema = new Schema(
     },
     gender: {
       type: String,
-      enum: ["male", "female", "unknow"],
+      enum: {
+        values: ["male", "female", "unknow"],
+        message: "{VALUE} is not supported",
+      },
       default: "unknow",
     },
     role: {

@@ -8,12 +8,15 @@ const nodemailer = require("nodemailer");
 const SERECT_KEY = process.env.SERECT_KEY;
 
 exports.register = catchAsync(async (req, res) => {
-  const { name, email, password, age } = req.body;
+  const { name, email, password, age, address, phone, gender } = req.body;
   const existedAuth = await AuthSchema.create({
     name,
     email,
     password,
     age,
+    address,
+    phone,
+    gender,
   });
 
   res.status(201).json({ succes: true, data: existedAuth });
@@ -78,3 +81,5 @@ exports.updateDetail = catchAsync(async (req, res) => {
   );
   res.status(201).json({ succes: true, data: update });
 });
+
+exports.changePassword = catchAsync(async (req, res) => {});
