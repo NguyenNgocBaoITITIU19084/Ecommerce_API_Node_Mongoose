@@ -48,7 +48,7 @@ const authSchema = new Schema(
       type: String,
       enum: {
         values: ["male", "female", "unknow"],
-        message: "{VALUE} is not supported",
+        message: "{VALUE} is not gender",
       },
       default: "unknow",
     },
