@@ -2,10 +2,13 @@ require("dotenv").config();
 
 const express = require("express");
 
-const PORT = process.env.PORT;
-const authRouter = require("./routes/authRouters");
-const ConnectDB = require("./config/db");
 const catchError = require("./middlewares/catchErrors");
+const authRouter = require("./routes/authRouters");
+const categoryRouter = require("./routes/categoryRouter");
+const productRouter = require("./routes/productRouter");
+const ConnectDB = require("./config/db");
+
+const PORT = process.env.PORT;
 
 const app = express();
 app.use(express.json());
@@ -13,6 +16,8 @@ app.use(express.json());
 ConnectDB();
 
 app.use("/auth", authRouter);
+app.use("/category", categoryRouter);
+app.use("product", productRouter);
 
 app.use(catchError);
 

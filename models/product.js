@@ -35,6 +35,10 @@ const productSchema = new Schema(
       ref: "category",
       required: [true, "category product is required"],
     },
+    image: {
+      type: String,
+      required: [true, "image product is required"],
+    },
   },
   {
     timestamps: true,
