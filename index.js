@@ -17,7 +17,7 @@ ConnectDB();
 
 app.use("/auth", authRouter);
 app.use("/category", categoryRouter);
-app.use("product", productRouter);
+app.use("/product", productRouter);
 
 app.use(catchError);
 
