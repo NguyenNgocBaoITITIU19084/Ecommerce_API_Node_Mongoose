@@ -1,7 +1,7 @@
 class ApiError {
-  constructor(status, message) {
+  constructor(statusCode, message) {
     this.message = message;
-    this.status = status;
+    this.statusCode = statusCode;
   }
 }
 module.exports = ApiError;
