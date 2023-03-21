@@ -28,7 +28,7 @@ const authSchema = new Schema(
     },
     password: {
       type: String,
-      minlength: [9, "password must be greater than 3 letters"],
+      minlength: [9, "password must be greater than 9 letters"],
       maxlength: [30, "password must be less than 30 letters"],
       required: [true, "password is required"],
     },
@@ -67,11 +67,9 @@ const authSchema = new Schema(
   }
 );
 
-mongoose.set("runValidators", true);
-
 authSchema.pre("save", function (next) {
   if (this.isModified("password")) {
-    const salt = bcrypt.genSaltSync(11);
+    const salt = bcrypt.genSaltSync();
     const hashedPassword = bcrypt.hashSync(this.password, salt);
     this.password = hashedPassword;
     next();
