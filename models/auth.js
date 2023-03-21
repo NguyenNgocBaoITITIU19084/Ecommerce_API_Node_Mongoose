@@ -39,7 +39,7 @@ const authSchema = new Schema(
       type: String,
       maxlength: [100, "address must be less than 100 letters"],
     },
-    phone: {
+    phoneNumber: {
       type: String,
       minlength: [10, "phone must be greater than or equal 10 numbers"],
       maxlength: [11, "phone must be less than or equal 11 numbers"],
@@ -50,12 +50,16 @@ const authSchema = new Schema(
         values: ["male", "female", "unknow"],
         message: "{VALUE} is not gender",
       },
-      default: "unknow",
+      default: "unknown",
     },
     role: {
       type: String,
       enum: ROLE,
       default: ROLE.GUEST,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   {
