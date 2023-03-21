@@ -47,12 +47,12 @@ const authSchema = new Schema(
     gender: {
       type: String,
       enum: {
-        values: ["male", "female", "unknow"],
+        values: ["male", "female", "unknown"],
         message: "{VALUE} is not gender",
       },
       default: "unknown",
     },
-    role: {
+    roles: {
       type: String,
       enum: ROLE,
       default: ROLE.GUEST,

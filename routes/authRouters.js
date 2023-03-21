@@ -9,5 +9,6 @@ route.post("/login", basicAuth, authController.login);
 route.post("/forgot-password", basicAuth, authController.forgot);
 route.post("/reset-password", basicAuth, authController.resetPassword);
 route.post("/update-password", jwtAuth, authController.updatePassword);
+route.patch("/update-user-detail", jwtAuth, authController.updateUserDetail);
 
 module.exports = route;

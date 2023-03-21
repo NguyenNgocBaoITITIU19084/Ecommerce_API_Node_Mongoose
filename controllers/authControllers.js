@@ -132,3 +132,24 @@ exports.updatePassword = catchAsync(async (req, res) => {
     res.json({ success: true, message: "Please, check your email" });
   }
 });
+
+exports.updateUserDetail = catchAsync(async (req, res) => {
+  const { email } = req.user;
+  const { name, age, address, phoneNumber, gender } = req.body;
+
+  const user = await AuthSchema.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "Not Found");
+  }
+  const updateDetail = await AuthSchema.findOneAndUpdate(
+    { email },
+    { name, age, address, phoneNumber, gender },
+    { new: true }
+  );
+
+  res.json({
+    success: true,
+    message: "Successfully update detail",
+    data: updateDetail,
+  });
+});
