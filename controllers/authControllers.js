@@ -30,6 +30,10 @@ exports.login = catchAsync(async (req, res) => {
   if (!existedEmail) {
     throw new ApiError(400, "email or password is not valid");
   }
+  // check active account
+  if (!existedEmail.isActive) {
+    throw new ApiError(403, "Your Account is banned");
+  }
   const isMatch = bcrypt.compareSync(password, existedEmail.password);
   if (!isMatch) {
     throw new ApiError(400, "email or password is not valid");

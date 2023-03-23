@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const catchAsync = require("../middlewares/catchAsync");
 const ApiError = require("../utils/ApiError");
 const AuthSchema = require("../models/auth");
+const EmailService = require("../utils/EmailService");
 
 exports.getAllUsers = catchAsync(async (req, res) => {
   const users = await AuthSchema.find({}).select("-password");
@@ -56,14 +57,14 @@ exports.setActiveUserById = catchAsync(async (req, res) => {
 
 exports.AddUser = catchAsync(async (req, res) => {
   const { email, roles } = req.body;
-  const isExistedUser = await AuthSchema.findOne({ email });
-  if (isExistedUser) {
-    throw new ApiError(404, "Existed Email");
-  }
-  const randomPassword = randomstring.generate(10);
-  const newUser = AuthSchema.create(
-    { email, password: randomPassword, roles },
-    { new: true }
+
+  const password = randomstring.generate(10);
+  const newUser = await AuthSchema.create({ email, password, roles });
+  await EmailService.sendGmail(
+    process.env.EMAIL,
+    email,
+    `YOUR ACCOUNT IS ACTIVE WITH ${roles}`,
+    `Your password is ${password}`
   );
   res.json({ success: true, data: newUser });
 });
