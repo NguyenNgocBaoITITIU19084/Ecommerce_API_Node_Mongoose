@@ -4,7 +4,7 @@ const SendmailTransport = require("nodemailer/lib/sendmail-transport");
 const AuthSchema = require("../models/auth");
 const ApiError = require("../utils/ApiError");
 
-exports.jwtAuth = async (req, res, next) => {
+exports.jwtAuth = (req, res, next) => {
   const headerToken = req.headers.authorization;
   if (!headerToken) {
     throw new ApiError(401, "Unauthorized");
@@ -15,10 +15,6 @@ exports.jwtAuth = async (req, res, next) => {
   }
   try {
     const user = jwt.verify(token, process.env.SERECT_KEY);
-    const userDetail = await AuthSchema.findOne({ email: user.email });
-    if (!userDetail.isActive) {
-      next(new ApiError(403, "Your Account is banned"));
-    }
     req.user = user;
     next();
   } catch (error) {
