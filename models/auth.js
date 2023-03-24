@@ -53,7 +53,7 @@ const authSchema = new Schema(
       default: "unknown",
     },
     roles: {
-      type: String,
+      type: [String],
       enum: ROLE,
       default: ROLE.GUEST,
     },

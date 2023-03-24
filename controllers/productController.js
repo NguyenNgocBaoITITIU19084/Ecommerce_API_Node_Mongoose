@@ -68,7 +68,9 @@ exports.updateProductById = catchAsync(async (req, res) => {
 });
 
 exports.getProducts = catchAsync(async (req, res) => {
-  const products = await productSchema.find({});
+  const products = await productSchema
+    .find({})
+    .populate("category", "name description -_id");
   if (!products) {
     throw new ApiError(404, "Not Found");
   }

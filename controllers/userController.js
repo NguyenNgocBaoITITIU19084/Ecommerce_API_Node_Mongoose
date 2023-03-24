@@ -57,14 +57,13 @@ exports.setActiveUserById = catchAsync(async (req, res) => {
 
 exports.AddUser = catchAsync(async (req, res) => {
   const { email, roles } = req.body;
-
   const password = randomstring.generate(10);
   const newUser = await AuthSchema.create({ email, password, roles });
-  await EmailService.sendGmail(
-    process.env.EMAIL,
-    email,
-    `YOUR ACCOUNT IS ACTIVE WITH ${roles}`,
-    `Your password is ${password}`
-  );
+  // await EmailService.sendGmail(
+  //   process.env.EMAIL,
+  //   email,
+  //   `YOUR ACCOUNT IS ACTIVE WITH ${roles}`,
+  //   `Your password is ${password}`
+  // );
   res.json({ success: true, data: newUser });
 });

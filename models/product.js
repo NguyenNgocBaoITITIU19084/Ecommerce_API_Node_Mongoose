@@ -27,16 +27,16 @@ const productSchema = new Schema(
       min: [1000, "price must be greater than 1000, got {VALUE}"],
     },
     discount: {
-      type: Schema.Types.ObjectId,
+      type: [Schema.Types.ObjectId],
       ref: "discount",
     },
     category: {
-      type: Schema.Types.ObjectId,
+      type: [Schema.Types.ObjectId],
       ref: "category",
       required: [true, "category product is required"],
     },
     image: {
-      type: String,
+      type: [String],
       required: [true, "image product is required"],
     },
   },
