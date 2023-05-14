@@ -13,18 +13,20 @@ const productSchema = new Schema(
     description: {
       type: String,
     },
-    code: {
-      type: String,
-      unique: true,
-    },
     price: {
       type: Number,
       required: [true, "product price is required"],
       min: [1000, "price must be greater than 1000, got {VALUE}"],
     },
-    importPrice: {
+    image: {
+      type: [String],
+      required: [true, "image product is required"],
+    },
+    inStock: {
       type: Number,
-      min: [1000, "price must be greater than 1000, got {VALUE}"],
+      required: [true, "inStock is required"],
+      min: [1, "inStock of product must be greater than 1"],
+      default: 1,
     },
     discount: {
       type: [Schema.Types.ObjectId],
@@ -35,9 +37,24 @@ const productSchema = new Schema(
       ref: "category",
       required: [true, "category product is required"],
     },
-    image: {
-      type: [String],
-      required: [true, "image product is required"],
+    brand: {
+      type: [Schema.Types.ObjectId],
+      ref: "brand",
+      required: [true, "brand product is required"],
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    createBy: {
+      type: String,
+    },
+    updateBy: {
+      type: String,
+    },
+    importPrice: {
+      type: Number,
+      min: [1000, "price must be greater than 1000, got {VALUE}"],
     },
   },
   {

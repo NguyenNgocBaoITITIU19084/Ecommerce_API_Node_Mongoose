@@ -4,28 +4,39 @@ const randomstring = require("randomstring");
 
 const catchAsync = require("../middlewares/catchAsync");
 const ApiError = require("../utils/ApiError");
+const EmailService = require("../utils/EmailService");
+const CODE_TOKEN = require("../contants/codeToken");
+const { STATUS_CODE } = require("../contants/statusCode");
+
 const AuthSchema = require("../models/auth");
 const TokenSchema = require("../models/token");
-const EmailService = require("../utils/EmailService");
+const ProfileSchema = require("../models/profile");
 
 const SERECT_KEY = process.env.SERECT_KEY;
 
 exports.register = catchAsync(async (req, res) => {
-  const { name, email, password, age, address, phoneNumber, gender } = req.body;
-  const existedAuth = await AuthSchema.create({
-    name,
+  const { email, password } = req.body;
+  const userInfor = await AuthSchema.create({
     email,
     password,
-    age,
-    address,
-    phoneNumber,
-    gender,
   });
-  res.status(201).json({ success: true, data: existedAuth });
+  const userId = await AuthSchema.findOne({ email });
+  // Create and link profile for user
+  const userProfile = await ProfileSchema.create({ userId });
+
+  // Send Email
+  // await EmailService.sendGmail(
+  //   process.env.EMAIL,
+  //   email,
+  //   "Create Account At DevShop.",
+  //   `Thanks for creating account at DevShop.`
+  // );
+  res.status(201).json({ successStatus: STATUS_CODE.SUCCESS, data: userInfor });
 });
 
 exports.login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
+
   const existedEmail = await AuthSchema.findOne({ email });
   if (!existedEmail) {
     throw new ApiError(400, "email or password is not valid");
@@ -40,13 +51,13 @@ exports.login = catchAsync(async (req, res) => {
   }
   const token = jwt.sign(
     {
-      email: existedEmail.email,
+      email: existedEmail._id,
       role: existedEmail.role,
     },
     SERECT_KEY,
     { expiresIn: "1d" }
   );
-  res.status(200).json({ success: true, token: token });
+  res.status(200).json({ successStatus: STATUS_CODE.SUCCESS, token: token });
 });
 
 exports.forgot = catchAsync(async (req, res) => {
@@ -55,7 +66,8 @@ exports.forgot = catchAsync(async (req, res) => {
   if (!existedEmail) {
     throw new ApiError(400, "email or password is not valid");
   }
-  const isExistedToken = await TokenSchema.findOne({ UserId: existedEmail.id });
+  const isExistedToken = await TokenSchema.findOne({ userId: existedEmail.id });
+
   if (isExistedToken) {
     return res.json({
       success: true,
@@ -87,7 +99,7 @@ exports.resetPassword = catchAsync(async (req, res) => {
   if (!token) {
     throw new ApiError(404, "Invalid Token");
   }
-  const isExistedToken = await TokenSchema.findOne({ UserId: userId });
+  const isExistedToken = await TokenSchema.findOne({ userId: userId });
   if (!isExistedToken) {
     throw new ApiError(404, "Not Found");
   }
@@ -100,7 +112,7 @@ exports.resetPassword = catchAsync(async (req, res) => {
 
   const result = await user.save();
   if (result) {
-    await TokenSchema.findOneAndDelete({ UserId: userId });
+    await TokenSchema.findOneAndDelete({ userId: userId });
   }
 
   // await EmailService.sendGmail(

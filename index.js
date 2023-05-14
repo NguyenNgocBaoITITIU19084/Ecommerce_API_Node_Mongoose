@@ -28,6 +28,6 @@ app.use("/user", userRouter);
 
 app.use(catchError);
 
-app.listen(PORT, (req, res) => {
-  console.log(`server is runnning on ${PORT}`);
+app.listen(PORT || 5000, (req, res) => {
+  console.log(`Server is runnning on http://localhost:${PORT}`);
 });

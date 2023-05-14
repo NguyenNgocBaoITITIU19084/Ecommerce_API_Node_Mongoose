@@ -27,6 +27,12 @@ const discountSchema = new Schema(
       },
       default: "false",
     },
+    createBy: {
+      type: String,
+    },
+    updateBy: {
+      type: String,
+    },
   },
   {
     collection: "discounts",
