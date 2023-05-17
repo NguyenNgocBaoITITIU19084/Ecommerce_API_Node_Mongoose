@@ -1,7 +1,5 @@
 const jwt = require("jsonwebtoken");
-const SendmailTransport = require("nodemailer/lib/sendmail-transport");
 
-const AuthSchema = require("../models/auth");
 const ApiError = require("../utils/ApiError");
 
 exports.jwtAuth = (req, res, next) => {
@@ -16,6 +14,7 @@ exports.jwtAuth = (req, res, next) => {
   try {
     const user = jwt.verify(token, process.env.SERECT_KEY);
     req.user = user;
+    console.log(user);
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {

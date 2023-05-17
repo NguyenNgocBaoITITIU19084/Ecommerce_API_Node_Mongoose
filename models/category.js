@@ -9,6 +9,7 @@ const categorySchema = new Schema(
       required: [true, "category name is required"],
       minlenght: [6, "category length must be greater than 6, got {VALUE}"],
       maxlength: [30, "category name must be lessthan than 30, got {VALUE}"],
+      unique: true,
     },
     description: {
       type: String,
@@ -19,10 +20,12 @@ const categorySchema = new Schema(
       default: true,
     },
     createBy: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "auth",
     },
     updateBy: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "auth",
     },
   },
   {

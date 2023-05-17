@@ -65,5 +65,5 @@ exports.AddUser = catchAsync(async (req, res) => {
   //   `YOUR ACCOUNT IS ACTIVE WITH ${roles}`,
   //   `Your password is ${password}`
   // );
-  res.json({ success: true, data: newUser });
+  res.json({ success: true, data: newUser, password: password });
 });

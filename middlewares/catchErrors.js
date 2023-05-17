@@ -1,4 +1,4 @@
-const STATUS_CODE = require("../contants/statusCode");
+const { STATUS_CODE } = require("../contants/statusCode");
 const catchError = (err, req, res, next) => {
   console.log("error-----", JSON.stringify(err, null, 2));
   // bắt lỗi ở mongoose
@@ -34,7 +34,7 @@ const catchError = (err, req, res, next) => {
 
   // Response API
   res.status(err.statusCode || 500).json({
-    status: false,
+    successStatus: STATUS_CODE.FAILED,
     statusCode: err.statusCode || 500,
     message: err.message || "Internal Error",
   });

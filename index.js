@@ -7,6 +7,7 @@ const authRouter = require("./routes/authRouters");
 const categoryRouter = require("./routes/categoryRouter");
 const productRouter = require("./routes/productRouter");
 const userRouter = require("./routes/userRouter");
+const brandRouter = require("./routes/brandRouter");
 const { rateLimit } = require("./middlewares/rateLimit");
 const EmailService = require("./utils/EmailService");
 
@@ -25,6 +26,7 @@ app.use("/auth", authRouter);
 app.use("/category", categoryRouter);
 app.use("/product", productRouter);
 app.use("/user", userRouter);
+app.use("/brand", brandRouter);
 
 app.use(catchError);
 

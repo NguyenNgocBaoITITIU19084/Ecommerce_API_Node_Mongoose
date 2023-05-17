@@ -51,13 +51,16 @@ exports.login = catchAsync(async (req, res) => {
   }
   const token = jwt.sign(
     {
-      email: existedEmail._id,
-      role: existedEmail.role,
+      id: existedEmail._id,
+      role: existedEmail.roles,
     },
     SERECT_KEY,
     { expiresIn: "1d" }
   );
-  res.status(200).json({ successStatus: STATUS_CODE.SUCCESS, token: token });
+  res.status(200).json({
+    successStatus: STATUS_CODE.SUCCESS,
+    token: token,
+  });
 });
 
 exports.forgot = catchAsync(async (req, res) => {
@@ -78,7 +81,7 @@ exports.forgot = catchAsync(async (req, res) => {
   const randoomToken = randomstring.generate(20);
   const salt = bcrypt.genSaltSync();
   const hashedToken = bcrypt.hashSync(randoomToken, salt);
-  await TokenSchema.create({ UserId: existedEmail.id, token: hashedToken });
+  await TokenSchema.create({ userId: existedEmail.id, token: hashedToken });
   const link = `${process.env.WEB_URL}/?token=${randoomToken}&userId=${existedEmail.id}`;
 
   // await EmailService.sendGmail(
@@ -88,14 +91,14 @@ exports.forgot = catchAsync(async (req, res) => {
   //   `Please click into this link ${link}`
   // );
   res.status(201).json({
-    success: true,
+    successStatus: STATUS_CODE.SUCCESS,
     message: "Please, check your email",
     token: randoomToken,
   });
 });
 
 exports.resetPassword = catchAsync(async (req, res) => {
-  const { token, userId, newPassword } = req.body;
+  const { token, userId, newPassword, confirmPassword } = req.body;
   if (!token) {
     throw new ApiError(404, "Invalid Token");
   }
@@ -108,6 +111,9 @@ exports.resetPassword = catchAsync(async (req, res) => {
     throw new ApiError(404, "Invalid Token");
   }
   const user = await AuthSchema.findOne({ _id: userId });
+  if (newPassword !== confirmPassword) {
+    throw new ApiError(400, "Password does not match");
+  }
   user.password = newPassword;
 
   const result = await user.save();
@@ -121,14 +127,17 @@ exports.resetPassword = catchAsync(async (req, res) => {
   //   "Reset Password Successfully!",
   //   `your password have already updated`
   // );
-  res.json({ success: true, message: "Please, check your email" });
+  res.status(200).json({
+    successStatus: STATUS_CODE.SUCCESS,
+    message: "Please, check your email",
+  });
 });
 
 exports.updatePassword = catchAsync(async (req, res) => {
-  const { email } = req.user;
-  const { oldPassword, newPassword } = req.body;
+  const { id } = req.user;
+  const { oldPassword, newPassword, confirmPassword } = req.body;
 
-  const user = await AuthSchema.findOne({ email });
+  const user = await AuthSchema.findById(id);
   if (!user) {
     throw new ApiError(404, "Invalid Email");
   }
@@ -136,7 +145,11 @@ exports.updatePassword = catchAsync(async (req, res) => {
   if (!isMatched) {
     throw new ApiError(400, "Password is Not Matched");
   }
+  if (newPassword !== confirmPassword) {
+    throw new ApiError(400, "Password does not match");
+  }
   user.password = newPassword;
+
   const result = await user.save();
   if (result) {
     // await EmailService.sendGmail(
@@ -145,27 +158,47 @@ exports.updatePassword = catchAsync(async (req, res) => {
     //   "Reset Password Successfully!",
     //   `your password have already updated`
     // );
-    res.json({ success: true, message: "Please, check your email" });
+    res.status(200).json({
+      successStatus: STATUS_CODE.SUCCESS,
+      message: "Reset Password Successfully! .Please, check your email",
+    });
   }
 });
 
 exports.updateUserDetail = catchAsync(async (req, res) => {
-  const { email } = req.user;
-  const { name, age, address, phoneNumber, gender } = req.body;
+  const { id } = req.user;
+  const { firstName, lastName, age, address, phoneNumber, gender } = req.body;
 
-  const user = await AuthSchema.findOne({ email });
+  const user = await AuthSchema.findById(id);
   if (!user) {
-    throw new ApiError(404, "Not Found");
+    throw new ApiError(404, "Not Found User");
   }
-  const updateDetail = await AuthSchema.findOneAndUpdate(
-    { email },
-    { name, age, address, phoneNumber, gender },
+  const userProfile = await ProfileSchema.findOneAndUpdate(
+    { userId: id },
+    {
+      firstName,
+      lastName,
+      age,
+      address,
+      phoneNumber,
+      gender,
+    },
     { new: true }
   );
-
-  res.json({
-    success: true,
-    message: "Successfully update detail",
-    data: updateDetail,
+  res.status(200).json({
+    successStatus: STATUS_CODE.SUCCESS,
+    message: "Successfully Update Profile",
+    data: userProfile,
   });
+});
+
+exports.getUserDetail = catchAsync(async (req, res) => {
+  const { id } = req.user;
+  const userProfile = await ProfileSchema.findOne({ userId: id }).populate({
+    path: "accountDetail",
+    select: "-_id -password",
+  });
+  res
+    .status(200)
+    .json({ successStatus: STATUS_CODE.SUCCESS, data: userProfile });
 });
