@@ -18,7 +18,7 @@ exports.createCategory = catchAsync(async (req, res) => {
   });
 });
 
-exports.getCategories = catchAsync(async (req, res) => {
+exports.getCategoriesForAdmin = catchAsync(async (req, res) => {
   const categories = await categorySchema
     .find()
     .populate({ path: "createBy", select: "email roles" })
@@ -29,7 +29,7 @@ exports.getCategories = catchAsync(async (req, res) => {
   });
 });
 
-exports.getCategoryById = catchAsync(async (req, res) => {
+exports.getCategoryByIdForAdmin = catchAsync(async (req, res) => {
   const { id } = req.params;
   const category = await categorySchema
     .findById(id)
@@ -94,5 +94,25 @@ exports.bannedCategoryById = catchAsync(async (req, res) => {
     successStatus: STATUS_CODE.SUCCESS,
     message: "Successfully Banned Category",
     data: updateCategory,
+  });
+});
+
+exports.getCategories = catchAsync(async (req, res) => {
+  const categories = await categorySchema.find();
+  res.status(200).json({
+    successStatus: STATUS_CODE.SUCCESS,
+    data: categories,
+  });
+});
+
+exports.getCategoryById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const category = await categorySchema.findById(id);
+  if (!category) {
+    throw new ApiError(400, "Not Found");
+  }
+  res.status(200).json({
+    successStatus: STATUS_CODE.SUCCESS,
+    data: category,
   });
 });

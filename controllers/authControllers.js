@@ -59,7 +59,7 @@ exports.login = catchAsync(async (req, res) => {
   );
   res.status(200).json({
     successStatus: STATUS_CODE.SUCCESS,
-    token: token,
+    access_token: token,
   });
 });
 

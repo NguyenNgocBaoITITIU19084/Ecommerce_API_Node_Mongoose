@@ -4,43 +4,52 @@ const categoryController = require("../controllers/categoryController");
 const { jwtAuth } = require("../middlewares/jwtAuth");
 const { authorize } = require("../middlewares/authorize");
 const { ROLE } = require("../contants/role");
+
+const ADMIN_URL = process.env.ADMIN_URL;
+const USER_URL = process.env.USER_URL;
+
 const router = express.Router();
 
 router.post(
-  "/",
+  `${ADMIN_URL}/`,
   jwtAuth,
   authorize(ROLE.ADMIN, ROLE.SUPPLIER),
   categoryController.createCategory
 );
 router.get(
-  "/",
+  `${ADMIN_URL}/`,
   jwtAuth,
   authorize(ROLE.ADMIN),
-  categoryController.getCategories
+  categoryController.getCategoriesForAdmin
 );
 router.get(
-  "/:id",
+  `${ADMIN_URL}/:id`,
   jwtAuth,
   authorize(ROLE.ADMIN),
-  categoryController.getCategoryById
+  categoryController.getCategoryByIdForAdmin
 );
 router.delete(
-  "/:id",
+  `${ADMIN_URL}/:id`,
   jwtAuth,
   authorize(ROLE.ADMIN),
   categoryController.deleteCategoryById
 );
 router.patch(
-  "/:id",
+  `${ADMIN_URL}/:id`,
   jwtAuth,
   authorize(ROLE.ADMIN),
   categoryController.updateCategoryById
 );
 router.patch(
-  "/set-active/:id",
+  `${ADMIN_URL}/set-active/:id`,
   jwtAuth,
   authorize(ROLE.ADMIN),
   categoryController.bannedCategoryById
 );
+
+router.get(`${USER_URL}/`, categoryController.getCategories);
+router.get(`${USER_URL}/:id`, categoryController.getCategoryById);
+
+router.get;
 
 module.exports = router;

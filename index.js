@@ -8,6 +8,7 @@ const categoryRouter = require("./routes/categoryRouter");
 const productRouter = require("./routes/productRouter");
 const userRouter = require("./routes/userRouter");
 const brandRouter = require("./routes/brandRouter");
+const cors = require("cors");
 const { rateLimit } = require("./middlewares/rateLimit");
 const EmailService = require("./utils/EmailService");
 
@@ -19,6 +20,7 @@ EmailService.init();
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 ConnectDB();
 

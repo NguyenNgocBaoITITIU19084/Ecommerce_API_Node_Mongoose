@@ -4,6 +4,11 @@ const { jwtAuth } = require("../middlewares/jwtAuth");
 const { authorize } = require("../middlewares/authorize");
 const { ROLE } = require("../contants/role");
 
+const ADMIN_URL = process.env.ADMIN_URL;
+const USER_URL = process.env.USER_URL;
+
 const route = express.Router();
-route.post("/", brandController.createBrand);
+
+route.post("/", jwtAuth, brandController.createBrand);
+
 module.exports = route;
