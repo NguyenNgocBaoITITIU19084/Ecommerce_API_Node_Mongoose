@@ -4,10 +4,11 @@ const Schema = mongoose.Schema;
 
 const discountSchema = new Schema(
   {
-    name: {
+    code: {
       type: String,
       required: [true, "discount name is required"],
       minlenght: [6, "discount length must be greater than 6, got {VALUE}"],
+      unique: true,
     },
     description: {
       type: String,
@@ -17,15 +18,11 @@ const discountSchema = new Schema(
       type: Number,
       required: [true, "discount persent is required"],
       min: [0, "discount persent must be greater than 0"],
+      default: 1,
     },
     isActive: {
       type: Boolean,
-      required: true,
-      enum: {
-        values: ["true", "false"],
-        message: "{VALUE} is not supported",
-      },
-      default: "false",
+      default: true,
     },
     createBy: {
       type: String,

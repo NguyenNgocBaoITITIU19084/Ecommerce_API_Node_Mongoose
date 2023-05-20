@@ -14,6 +14,7 @@ const brandSchema = new Schema(
         30,
         "length of brand name must be lessthan than 30, got {VALUE}",
       ],
+      unique: true,
     },
     description: {
       type: String,
