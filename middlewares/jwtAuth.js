@@ -14,7 +14,6 @@ exports.jwtAuth = (req, res, next) => {
   try {
     const user = jwt.verify(token, process.env.SERECT_KEY);
     req.user = user;
-    console.log(user);
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {

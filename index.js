@@ -12,19 +12,19 @@ const productRouter = require("./routes/productRouter");
 const userRouter = require("./routes/userRouter");
 const brandRouter = require("./routes/brandRouter");
 const discountRouter = require("./routes/discountRouter");
+const uploadRouter = require("./routes/uploadRouter");
 const EmailService = require("./utils/EmailService");
 
-const ConnectDB = require("./config/db");
+const Mongo = require("./config/db");
 const PORT = process.env.PORT;
 
 EmailService.init();
+Mongo.connect();
 
 const app = express();
-
-app.use(express.json());
 app.use(cors());
 
-ConnectDB();
+app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/category", categoryRouter);
@@ -32,6 +32,7 @@ app.use("/product", productRouter);
 app.use("/user", userRouter);
 app.use("/brand", brandRouter);
 app.use("/discount", discountRouter);
+app.use("/upload", uploadRouter);
 
 app.use(catchError);
 

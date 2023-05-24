@@ -1,4 +1,5 @@
 const multer = require("multer");
+
 const path = require("path");
 
 const ApiError = require("../utils/ApiError");
@@ -26,4 +27,5 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage, fileFilter });
-module.exports = upload;
+
+module.exports = { upload };

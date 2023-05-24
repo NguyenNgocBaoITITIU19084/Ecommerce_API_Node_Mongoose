@@ -10,42 +10,12 @@ const USER_URL = process.env.USER_URL;
 
 const router = express.Router();
 
-router.post(
-  `${ADMIN_URL}/`,
-  jwtAuth,
-  authorize(ROLE.ADMIN, ROLE.SUPPLIER),
-  categoryController.createCategory
-);
-router.get(
-  `${ADMIN_URL}/`,
-  jwtAuth,
-  authorize(ROLE.ADMIN),
-  categoryController.getCategoriesForAdmin
-);
-router.get(
-  `${ADMIN_URL}/:id`,
-  jwtAuth,
-  authorize(ROLE.ADMIN),
-  categoryController.getCategoryByIdForAdmin
-);
-router.delete(
-  `${ADMIN_URL}/:id`,
-  jwtAuth,
-  authorize(ROLE.ADMIN),
-  categoryController.deleteCategoryById
-);
-router.patch(
-  `${ADMIN_URL}/:id`,
-  jwtAuth,
-  authorize(ROLE.ADMIN),
-  categoryController.updateCategoryById
-);
-router.patch(
-  `${ADMIN_URL}/set-active/:id`,
-  jwtAuth,
-  authorize(ROLE.ADMIN),
-  categoryController.bannedCategoryById
-);
+router.post("/", jwtAuth, categoryController.createCategory);
+router.get("/", categoryController.getCategoriesForAdmin);
+router.get("/:id", categoryController.getCategoryByIdForAdmin);
+router.delete("/:id", jwtAuth, categoryController.deleteCategoryById);
+router.patch("/:id", jwtAuth, categoryController.updateCategoryById);
+router.patch("/set-active/:id", jwtAuth, categoryController.bannedCategoryById);
 
 router.get(`${USER_URL}/`, categoryController.getCategories);
 router.get(`${USER_URL}/:id`, categoryController.getCategoryById);
