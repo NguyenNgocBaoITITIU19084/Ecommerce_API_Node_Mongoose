@@ -21,7 +21,7 @@ const productSchema = new Schema(
     images: [
       {
         public_id: String,
-        url: String,
+        secure_url: String,
       },
     ],
     inStock: {
@@ -51,12 +51,12 @@ const productSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    createBy: {
-      type: String,
-    },
-    updateBy: {
-      type: String,
-    },
+    // createBy: {
+    //   type: String,
+    // },
+    // updateBy: {
+    //   type: String,
+    // },
     importPrice: {
       type: Number,
       min: [1, "price must be greater than 1, got {VALUE}"],

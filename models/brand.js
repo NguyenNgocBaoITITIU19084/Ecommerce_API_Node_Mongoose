@@ -22,20 +22,20 @@ const brandSchema = new Schema(
     },
     images: {
       type: [String],
-      required: [true, "image of brand is required"],
+      // required: [true, "image of brand is required"],
     },
     isActive: {
       type: Boolean,
       default: true,
     },
-    createBy: {
-      type: mongoose.Types.ObjectId,
-      ref: "auth",
-    },
-    updateBy: {
-      type: mongoose.Types.ObjectId,
-      ref: "auth",
-    },
+    // createBy: {
+    //   type: mongoose.Types.ObjectId,
+    //   ref: "auth",
+    // },
+    // updateBy: {
+    //   type: mongoose.Types.ObjectId,
+    //   ref: "auth",
+    // },
   },
   {
     timestamps: true,

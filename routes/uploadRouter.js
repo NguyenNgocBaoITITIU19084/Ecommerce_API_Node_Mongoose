@@ -15,4 +15,6 @@ route.post(
   uploadController.uploadImgCloudinary
 );
 
+route.delete("/cloud/:id", uploadController.deleteImgCloud);
+
 module.exports = route;

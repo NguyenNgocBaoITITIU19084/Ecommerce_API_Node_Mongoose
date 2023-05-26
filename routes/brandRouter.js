@@ -9,11 +9,11 @@ const USER_URL = process.env.USER_URL;
 
 const route = express.Router();
 
-route.post("/", jwtAuth, brandController.createBrand);
+route.post("/", brandController.createBrand);
 route.get("/", brandController.getAllBrands);
 route.get("/:id", brandController.getBrandById);
 route.delete("/:id", brandController.deleteBrandById);
-route.patch("/:id", jwtAuth, brandController.updateBrandById);
-route.patch("/banned/:id", jwtAuth, brandController.bannedBrandById);
+route.patch("/:id", brandController.updateBrandById);
+route.patch("/banned/:id", brandController.bannedBrandById);
 
 module.exports = route;

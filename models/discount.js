@@ -24,12 +24,12 @@ const discountSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    createBy: {
-      type: String,
-    },
-    updateBy: {
-      type: String,
-    },
+    // createBy: {
+    //   type: String,
+    // },
+    // updateBy: {
+    //   type: String,
+    // },
   },
   {
     collection: "discounts",

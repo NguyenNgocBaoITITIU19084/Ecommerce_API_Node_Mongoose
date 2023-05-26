@@ -19,14 +19,14 @@ const categorySchema = new Schema(
       type: Boolean,
       default: true,
     },
-    createBy: {
-      type: mongoose.Types.ObjectId,
-      ref: "auth",
-    },
-    updateBy: {
-      type: mongoose.Types.ObjectId,
-      ref: "auth",
-    },
+    // createBy: {
+    //   type: mongoose.Types.ObjectId,
+    //   ref: "auth",
+    // },
+    // updateBy: {
+    //   type: mongoose.Types.ObjectId,
+    //   ref: "auth",
+    // },
   },
   {
     collection: "categories",

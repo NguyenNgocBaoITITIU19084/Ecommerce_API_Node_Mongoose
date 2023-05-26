@@ -6,7 +6,7 @@ const { jwtAuth } = require("../middlewares/jwtAuth");
 const uploadMongo = require("../middlewares/uploadsMongo");
 const router = express.Router();
 
-router.post("/", jwtAuth, productController.createProduct);
+router.post("/", productController.createProduct);
 router.get("/:id", productController.getProductById);
 router.get("/", productController.getProducts);
 router.delete("/:id", productController.deleteProductById);

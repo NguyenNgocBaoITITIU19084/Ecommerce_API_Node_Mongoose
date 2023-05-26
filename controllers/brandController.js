@@ -4,13 +4,13 @@ const ApiError = require("../utils/ApiError");
 const { STATUS_CODE } = require("../contants/statusCode");
 
 exports.createBrand = catchAsync(async (req, res) => {
-  const { id } = req.user;
+  // const { id } = req.user;
   const { name, description, images } = req.body;
   const brand = await brandSchema.create({
     name,
     description,
     images,
-    createBy: id,
+    // createBy: id,
   });
   res.status(201).json({
     successStatus: STATUS_CODE.SUCCESS,
@@ -54,7 +54,7 @@ exports.deleteBrandById = catchAsync(async (req, res) => {
 
 exports.updateBrandById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id;
+  // const userId = req.user.id;
   const { name, description, images } = req.body;
   const brand = await brandSchema.findByIdAndUpdate(
     id,
@@ -62,7 +62,7 @@ exports.updateBrandById = catchAsync(async (req, res) => {
       name,
       description,
       images,
-      updateBy: userId,
+      // updateBy: userId,
     },
     { new: true }
   );
@@ -77,7 +77,7 @@ exports.updateBrandById = catchAsync(async (req, res) => {
 });
 exports.bannedBrandById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id;
+  // const userId = req.user.id;
   const brand = await brandSchema.findById(id);
   if (!brand) {
     throw new ApiError(404, "Not Found");
@@ -86,7 +86,7 @@ exports.bannedBrandById = catchAsync(async (req, res) => {
     id,
     {
       isActive: !brand.isActive,
-      updateBy: userId,
+      // updateBy: userId,
     },
     { new: true }
   );

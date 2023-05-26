@@ -4,7 +4,7 @@ const productSchema = require("../models/product");
 const { STATUS_CODE } = require("../contants/statusCode");
 
 exports.createProduct = catchAsync(async (req, res) => {
-  const userId = req.user.id;
+  // const userId = req.user.id;
   const {
     name,
     description,
@@ -12,6 +12,7 @@ exports.createProduct = catchAsync(async (req, res) => {
     inStock,
     discount,
     category,
+    images,
     brand,
     importPrice,
   } = req.body;
@@ -23,8 +24,9 @@ exports.createProduct = catchAsync(async (req, res) => {
     discount,
     category,
     brand,
+    images,
     importPrice,
-    createBy: userId,
+    // createBy: userId,
   });
   res.status(201).json({
     successStatus: STATUS_CODE.SUCCESS,

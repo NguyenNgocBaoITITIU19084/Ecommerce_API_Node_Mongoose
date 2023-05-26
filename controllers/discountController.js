@@ -4,13 +4,13 @@ const ApiError = require("../utils/ApiError");
 const { STATUS_CODE } = require("../contants/statusCode");
 
 exports.createDiscount = catchAsync(async (req, res) => {
-  const userId = req.user.id;
+  // const userId = req.user.id;
   const { code, description, discountPersent } = req.body;
   const discount = await discountSchema.create({
     code,
     description,
     discountPersent,
-    createBy: userId,
+    // createBy: userId,
   });
   res.status(201).json({
     successStatus: STATUS_CODE.SUCCESS,
@@ -43,7 +43,7 @@ exports.getDiscountById = catchAsync(async (req, res) => {
 
 exports.updateDiscountById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id;
+  // const userId = req.user.id;
   const { code, description, discountPersent } = req.body;
   const updateDiscount = await discountSchema.findByIdAndUpdate(
     id,
@@ -51,7 +51,7 @@ exports.updateDiscountById = catchAsync(async (req, res) => {
       code,
       description,
       discountPersent,
-      updateBy: userId,
+      // updateBy: userId,
     },
     { new: true }
   );
@@ -67,7 +67,7 @@ exports.updateDiscountById = catchAsync(async (req, res) => {
 
 exports.bannedDiscountById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id;
+  // const userId = req.user.id;
   const discount = await discountSchema.findById(id);
   if (!discount) {
     throw new ApiError(404, "Not Found");
@@ -76,7 +76,7 @@ exports.bannedDiscountById = catchAsync(async (req, res) => {
     id,
     {
       isActive: !discount.isActive,
-      updateBy: userId,
+      // updateBy: userId,
     },
     { new: true }
   );

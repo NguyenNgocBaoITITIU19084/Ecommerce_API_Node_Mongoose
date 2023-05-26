@@ -4,12 +4,12 @@ const categorySchema = require("../models/category");
 const { STATUS_CODE } = require("../contants/statusCode");
 
 exports.createCategory = catchAsync(async (req, res) => {
-  const { id } = req.user;
+  // const { id } = req.user;
   const { name, description } = req.body;
   const category = await categorySchema.create({
     name,
     description,
-    createBy: id,
+    // createBy: id,
   });
   res.status(201).json({
     successStatus: STATUS_CODE.SUCCESS,
@@ -19,10 +19,9 @@ exports.createCategory = catchAsync(async (req, res) => {
 });
 
 exports.getCategoriesForAdmin = catchAsync(async (req, res) => {
-  const categories = await categorySchema
-    .find()
-    .populate({ path: "createBy", select: "email roles" })
-    .populate({ path: "updateBy", select: "email roles" });
+  const categories = await categorySchema.find();
+  // .populate({ path: "createBy", select: "email roles" })
+  // .populate({ path: "updateBy", select: "email roles" });
   res.status(200).json({
     successStatus: STATUS_CODE.SUCCESS,
     data: categories,
@@ -31,10 +30,9 @@ exports.getCategoriesForAdmin = catchAsync(async (req, res) => {
 
 exports.getCategoryByIdForAdmin = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const category = await categorySchema
-    .findById(id)
-    .populate({ path: "createBy", select: "email roles" })
-    .populate({ path: "updateBy", select: "email roles" });
+  const category = await categorySchema.findById(id);
+  // .populate({ path: "createBy", select: "email roles" })
+  // .populate({ path: "updateBy", select: "email roles" });
   if (!category) {
     throw new ApiError(400, "Not Found");
   }
@@ -55,17 +53,16 @@ exports.deleteCategoryById = catchAsync(async (req, res) => {
 });
 
 exports.updateCategoryById = catchAsync(async (req, res) => {
-  const userId = req.user.id;
+  // const userId = req.user.id;
   const { id } = req.params;
   const { name, description } = req.body;
-  const updateCategory = await categorySchema
-    .findByIdAndUpdate(id, {
-      name,
-      description,
-      updateBy: userId,
-    })
-    .populate({ path: "createBy", select: "email roles" })
-    .populate({ path: "updateBy", select: "email roles" });
+  const updateCategory = await categorySchema.findByIdAndUpdate(id, {
+    name,
+    description,
+    // updateBy: userId,
+  });
+  // .populate({ path: "createBy", select: "email roles" })
+  // .populate({ path: "updateBy", select: "email roles" });
   if (!updateCategory) {
     throw new ApiError(400, "Not Found");
   }
@@ -77,7 +74,7 @@ exports.updateCategoryById = catchAsync(async (req, res) => {
 });
 
 exports.bannedCategoryById = catchAsync(async (req, res) => {
-  const userId = req.user.id;
+  // const userId = req.user.id;
   const { id } = req.params;
   const category = await categorySchema.findById(id);
   if (!category) {
@@ -86,7 +83,7 @@ exports.bannedCategoryById = catchAsync(async (req, res) => {
   const updateCategory = await categorySchema
     .findByIdAndUpdate(id, {
       isActive: !category.isActive,
-      updateBy: userId,
+      // updateBy: userId,
     })
     .populate({ path: "createBy", select: "email roles" })
     .populate({ path: "updateBy", select: "email roles" });

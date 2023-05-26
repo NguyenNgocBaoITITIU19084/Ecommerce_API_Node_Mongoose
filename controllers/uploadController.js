@@ -2,7 +2,10 @@ const catchAsync = require("../middlewares/catchAsync");
 const Mongo = require("../config/db");
 const { STATUS_CODE } = require("../contants/statusCode");
 const ApiError = require("../utils/ApiError");
-const { cloudinaryUploadImg } = require("../utils/cloudinary");
+const {
+  cloudinaryUploadImg,
+  cloudinaryDeleteImg,
+} = require("../utils/cloudinary");
 const fs = require("fs");
 exports.uploadImg = catchAsync(async (req, res) => {
   const files = req.files;
@@ -33,11 +36,25 @@ exports.uploadImgCloudinary = catchAsync(async (req, res) => {
   for (const file of files) {
     const { path } = file;
     const newpath = await cloudinaryUploadImg(path, "images");
-    urls.push(newpath.secure_url);
+    urls.push({
+      secure_url: newpath.secure_url,
+      asset_id: newpath.asset_id,
+      public_id: newpath.public_id,
+    });
     fs.unlinkSync(path);
   }
-  const images = urls.map((file) => {
-    return file;
+  res.status(201).json({
+    successStatus: STATUS_CODE.SUCCESS,
+    message: "Successfully Upload Image",
+    data: urls,
   });
-  res.send(images);
+});
+exports.deleteImgCloud = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const deleted = cloudinaryDeleteImg(id, "images");
+  res.status(200).json({
+    successStatus: STATUS_CODE.SUCCESS,
+    message: "Successfully Delete Image",
+    data: deleted,
+  });
 });
